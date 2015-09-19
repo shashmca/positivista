@@ -1,0 +1,60 @@
+<ion-side-menus enable-menu-with-back-views="false">
+  <ion-side-menu-content>
+    <ion-nav-bar class="bar-stable">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+
+      <ion-nav-buttons side="right">
+        <button class="button button-icon button-clear ion-navicon" ng-show="visible" menu-toggle="right" ng-click="barHandle()">
+        </button>
+      </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-nav-view name="menuContent"></ion-nav-view>
+  </ion-side-menu-content>
+
+  <ion-side-menu side="right" enable-menu-with-back-views="true">
+    <ion-header-bar class="bar-stable">
+      <a href="javascript:void(0);" class="close" menu-toggle="right" ng-click="barHandle()"></a>
+    </ion-header-bar>
+    <ion-content>
+      <ion-list>
+        <!--<ion-item menu-close ng-click="login()">
+          Login
+        </ion-item>
+        <ion-item menu-close href="#/app/search">
+          Search
+        </ion-item>
+        <ion-item menu-close href="#/app/browse">
+          Browse
+        </ion-item>
+        <ion-item menu-close href="#/app/playlists">
+          Playlists
+        </ion-item>-->
+        <ion-item menu-close href="#/app/homepage">
+          Home
+        </ion-item>
+        <ion-item menu-close href="#/app/playlists">
+          Report
+        </ion-item>
+        <ion-item menu-close href="#/app/playlists">
+          About
+        </ion-item>
+        <ion-item menu-close href="#/app/playlists">
+          Profile
+        </ion-item>
+        <ion-item menu-close href="#/app/playlists">
+          Goals
+        </ion-item>
+        <ion-item menu-close href="#/app/playlists">
+          Reminders
+        </ion-item>
+        <ion-item menu-close href="#/app/playlists">
+          Settings
+        </ion-item>
+        <ion-item menu-close href="#/app/playlists">
+          Logout
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-side-menu>
+</ion-side-menus>
