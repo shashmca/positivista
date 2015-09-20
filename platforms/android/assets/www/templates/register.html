@@ -1,0 +1,28 @@
+<ion-view class="body-bg bg-grey">
+  <ion-content>
+    <div class="logo"></div>
+    <div class="tag-line"><span>Coaching for positive change</span></div>
+    <form name="registerForm" role="form">
+      <div class="list">
+        <label class="item item-input">
+          <input type="text" ng-class="{'error': registerForm.username.$invalid && !registerForm.username.$pristine }" ng-model="username" placeholder="username" name="username" ng-required="true" minlength="4" maxlength="20" />
+        </label>
+        <label class="item item-input">
+          <input type="email" name="email" ng-class="{'error': registerForm.email.$invalid && !registerForm.email.$pristine }" ng-model="email" placeholder="email" ng-required="true" email />
+        </label>
+        <label class="item item-input">
+          <input type="password" ng-model="password" name="password" ng-class="{'error': registerForm.password.$invalid && !registerForm.password.$pristine }" placeholder="password" ng-required="true" minlength="6" maxlength="20"  />
+        </label>
+        <label class="item item-input">
+          <input type="password" ng-model="confpassword" name="confpassword" ng-class="{'error': registerForm.confpassword.$invalid && !registerForm.confpassword.$pristine }" placeholder="confpassword" ng-required="true" minlength="6" maxlength="20" />
+        </label>
+        <div class="item ">
+          <input class="button" type="button" value="Login" ng-click="reset();" />
+          <input class="button" type="submit" ng-disabled="!registerForm.$valid" value="Register" ng-click="doRegister()"/>
+          
+        </div>
+        
+      </div>
+    </form>
+  </ion-content>
+</ion-modal-view>
