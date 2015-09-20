@@ -65,10 +65,12 @@ angular.module('positivista')
                     loggedIn = false
                 });
             },
-            register: function(username, pwd) {
+            register: function(username, pwd, email) {
                 return $http.post(requestUrl, {
+                    action: "signup",
                     username: username,
-                    password: pwd
+                    password: pwd,
+                    emailId: email
                 }).then(loginSuccess, loginFailure);
             },
             tokens: function() {
