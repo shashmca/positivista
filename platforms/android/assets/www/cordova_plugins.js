@@ -312,6 +312,7 @@ module.exports.metadata =
     "org.apache.cordova.media": "0.2.16",
     "org.apache.cordova.file-transfer": "0.5.0",
     "org.apache.cordova.inappbrowser": "0.6.0",
+    "cordova-plugin-crosswalk-webview": "1.3.1",
     "org.apache.cordova.file": "1.3.3"
 }
 // BOTTOM OF METADATA

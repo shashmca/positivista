@@ -108,6 +108,9 @@ angular.module('positivista.controllers', [])
     for(var i=0; i<$scope.goalList.length; i++) {
         $scope.checkbox[i] = false;    
     }
+    $scope.isChecked = function(index) {
+        $scope.checkbox[index] = !$scope.checkbox[index];
+    }
 })
 
 .controller('SetReminderCtrl', function($scope, $stateParams) {

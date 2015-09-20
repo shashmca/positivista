@@ -43,38 +43,64 @@ angular.module('positivista.controllers', [])
     localStorage.setItem('currPage', 'app/homepage');
 })
 
-.controller('SetProfileCtrl', function($scope, $stateParams) {
+.controller('SetProfileCtrl', ['AlertService', 'UserService', '$location', '$scope', '$ionicPopup', function(AlertService, UserService, $location, $scope, $ionicPopup) {
     localStorage.setItem('currPage', 'setprofile');
-})
+    var userId = localStorage.getItem('userId');
+    $scope.saveProfileName = function(obj) {
+        if(obj.profilename) {
+            localStorage.setItem("profileName", obj.profilename);
+        }
+        UserService.updateProfileName(obj.profilename, userId).then(function(user) {
+            console.log("Profile name saved in DB");
+        }, function(err) {
+            console.log("Profile name not saved in DB");
+        });
+    }
+
+    $scope.saveProfileStatus = function(obj) {
+        console.log("Status  ", obj.profileStatus)
+        localStorage.setItem("profileStatus ", obj.profileStatus);
+        UserService.updateProfileStatus(obj.profileStatus, userId).then(function(user) {
+            console.log("Profile status saved in DB");
+        }, function(err) {
+            console.log("Profile status not saved in DB");
+        });
+    }
+
+    $scope.saveProfileImage = function(obj) {
+        console.log("Image  ", obj.profileImg)
+        localStorage.setItem("profileImg ", obj.profileImg);
+        UserService.updateProfileStatus(obj.profileImg, userId).then(function(user) {
+            console.log("Profile image saved in DB");
+        }, function(err) {
+            console.log("Profile image not saved in DB");
+        });
+    }
+
+
+}])
 
 .controller('MandGoalsCtrl', function($scope, $stateParams) {
     localStorage.setItem('currPage', 'mandgoal');
-    $scope.goalList = [
-        {
-            "title":"Set clear goals?"
-        },
-        {
-            "title":"Make progress towards goal achievements?"
-        },
-        {
-            "title":"Find meaning?"
-        },
-        {
-            "title":"Be happy?"
-        },
-        {
-            "title":"Build positive relationships?"
-        },
-        {
-            "title":"Be fully engaged?"
-        }
-    ];
+    $scope.goalList = [{
+        "title": "Set clear goals?"
+    }, {
+        "title": "Make progress towards goal achievements?"
+    }, {
+        "title": "Find meaning?"
+    }, {
+        "title": "Be happy?"
+    }, {
+        "title": "Build positive relationships?"
+    }, {
+        "title": "Be fully engaged?"
+    }];
 
     $scope.checkbox = [];
-    for(var i=0; i<$scope.goalList.length; i++) {
-        $scope.checkbox[i] = false;    
+    for (var i = 0; i < $scope.goalList.length; i++) {
+        $scope.checkbox[i] = false;
     }
-    
+
     $scope.isChecked = function(index) {
         $scope.checkbox[index] = !$scope.checkbox[index];
     }
@@ -83,30 +109,23 @@ angular.module('positivista.controllers', [])
 
 .controller('UserGoalsCtrl', function($scope, $stateParams) {
     localStorage.setItem('currPage', 'usergoal');
-    $scope.goalList = [
-        {
-            "title":"Set clear goals?"
-        },
-        {
-            "title":"Make progress towards goal achievements?"
-        },
-        {
-            "title":"Find meaning?"
-        },
-        {
-            "title":"Be happy?"
-        },
-        {
-            "title":"Build positive relationships?"
-        },
-        {
-            "title":"Be fully engaged?"
-        }
-    ]
+    $scope.goalList = [{
+        "title": "Set clear goals?"
+    }, {
+        "title": "Make progress towards goal achievements?"
+    }, {
+        "title": "Find meaning?"
+    }, {
+        "title": "Be happy?"
+    }, {
+        "title": "Build positive relationships?"
+    }, {
+        "title": "Be fully engaged?"
+    }]
 
     $scope.checkbox = [];
-    for(var i=0; i<$scope.goalList.length; i++) {
-        $scope.checkbox[i] = false;    
+    for (var i = 0; i < $scope.goalList.length; i++) {
+        $scope.checkbox[i] = false;
     }
     $scope.isChecked = function(index) {
         $scope.checkbox[index] = !$scope.checkbox[index];

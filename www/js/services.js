@@ -44,6 +44,24 @@ angular.module('positivista')
             loggedIn = false;
             return $q.reject(err.data);
         };
+        var profileNameSucc = function(resp) {
+            return resp;
+        };
+        var profileNameFail = function(err) {
+            return $q.reject(err.data);
+        };
+        var profileStatusSucc = function(resp) {
+            return resp;
+        };
+        var profileStatusFail = function(err) {
+            return $q.reject(err.data);
+        };
+        var profileImgSucc = function(resp) {
+            return resp;
+        };
+        var profileImgFail = function(err) {
+            return $q.reject(err.data);
+        };
 
         return {
             isLoggedIn: function() {
@@ -79,6 +97,27 @@ angular.module('positivista')
                 } else {
                     return $http.post('/api/token', {}).then(loginSuccess, loginFailure);
                 }
+            },
+            updateProfileName: function(profileName, userId) {
+                return $http.post(requestUrl, {
+                    action: "updateProfileName",
+                    profileName: profileName,
+                    userId: userId
+                }).then(profileNameSucc, profileNameFail);
+            },
+            updateProfileStatus: function(profileStatus, userId) {
+                return $http.post(requestUrl, {
+                    action: "updateProfileStatus",
+                    profileStatus: profileStatus,
+                    userId: userId
+                }).then(profileStatusSucc, profileStatusFail);
+            },
+            updateProfileImg: function(profileImg, userId) {
+                return $http.post(requestUrl, {
+                    action: "updateProfileImg",
+                    profileImg: profileImg,
+                    userId: userId
+                }).then(profileImgSucc, profileImgFail);
             }
         };
     }]);
