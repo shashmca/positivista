@@ -46,35 +46,54 @@ angular.module('positivista.controllers', [])
 .controller('SetProfileCtrl', ['AlertService', 'UserService', '$location', '$scope', '$ionicPopup', function(AlertService, UserService, $location, $scope, $ionicPopup) {
     localStorage.setItem('currPage', 'setprofile');
     var userId = localStorage.getItem('userId');
-    $scope.saveProfileName = function(obj) {
-        if(obj.profilename) {
-            localStorage.setItem("profileName", obj.profilename);
+    $scope.profileName = localStorage.getItem("profileName");
+    $scope.profileStatus = localStorage.getItem("profileStatus");
+    $scope.profileImg = localStorage.getItem("profileImg");
+    $scope.saveProfileName = function() {
+        if (this.profileName) {
+            localStorage.setItem("profileName", this.profileName);
         }
-        UserService.updateProfileName(obj.profilename, userId).then(function(user) {
+        UserService.updateProfileName(this.profilename, userId).then(function(user) {
             console.log("Profile name saved in DB");
         }, function(err) {
             console.log("Profile name not saved in DB");
         });
     }
 
-    $scope.saveProfileStatus = function(obj) {
-        console.log("Status  ", obj.profileStatus)
-        localStorage.setItem("profileStatus ", obj.profileStatus);
-        UserService.updateProfileStatus(obj.profileStatus, userId).then(function(user) {
+    $scope.saveProfileStatus = function() {
+        console.log("Status  ", this.profileStatus)
+        localStorage.setItem("profileStatus", this.profileStatus);
+        UserService.updateProfileStatus(this.profileStatus, userId).then(function(user) {
             console.log("Profile status saved in DB");
         }, function(err) {
             console.log("Profile status not saved in DB");
         });
     }
 
-    $scope.saveProfileImage = function(obj) {
-        console.log("Image  ", obj.profileImg)
-        localStorage.setItem("profileImg ", obj.profileImg);
-        UserService.updateProfileStatus(obj.profileImg, userId).then(function(user) {
+    $scope.saveProfileImage = function() {
+        console.log("Image  ", this.profileImg)
+        localStorage.setItem("profileImg ", this.profileImg);
+        /*profileImg = document.getElementById('profileImg');
+        imgData = getBase64Image(profileImg);
+        localStorage.setItem("profileImg", imgData);*/
+        UserService.updateProfileStatus(this.profileImg, userId).then(function(user) {
             console.log("Profile image saved in DB");
         }, function(err) {
             console.log("Profile image not saved in DB");
         });
+    }
+
+    $scope.getBase64Image = function(img) {
+        var canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+
+        var dataURL = canvas.toDataURL("image/png");
+
+        return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
     }
 
 
