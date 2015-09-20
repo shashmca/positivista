@@ -49,10 +49,68 @@ angular.module('positivista.controllers', [])
 
 .controller('MandGoalsCtrl', function($scope, $stateParams) {
     localStorage.setItem('currPage', 'mandgoal');
+    $scope.goalList = [
+        {
+            "title":"Set clear goals?"
+        },
+        {
+            "title":"Make progress towards goal achievements?"
+        },
+        {
+            "title":"Find meaning?"
+        },
+        {
+            "title":"Be happy?"
+        },
+        {
+            "title":"Build positive relationships?"
+        },
+        {
+            "title":"Be fully engaged?"
+        }
+    ];
+
+    $scope.checkbox = [];
+    for(var i=0; i<$scope.goalList.length; i++) {
+        $scope.checkbox[i] = false;    
+    }
+    
+    $scope.isChecked = function(index) {
+        $scope.checkbox[index] = !$scope.checkbox[index];
+    }
+
 })
 
 .controller('UserGoalsCtrl', function($scope, $stateParams) {
     localStorage.setItem('currPage', 'usergoal');
+    $scope.goalList = [
+        {
+            "title":"Set clear goals?"
+        },
+        {
+            "title":"Make progress towards goal achievements?"
+        },
+        {
+            "title":"Find meaning?"
+        },
+        {
+            "title":"Be happy?"
+        },
+        {
+            "title":"Build positive relationships?"
+        },
+        {
+            "title":"Be fully engaged?"
+        }
+    ]
+
+    $scope.checkbox = [];
+    for(var i=0; i<$scope.goalList.length; i++) {
+        $scope.checkbox[i] = false;    
+    }
+    $scope.isChecked = function(index) {
+        $scope.checkbox[index] = !$scope.checkbox[index];
+    }
 })
 
 .controller('SetReminderCtrl', function($scope, $stateParams) {

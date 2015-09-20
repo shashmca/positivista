@@ -17,7 +17,7 @@
           <input type="password" ng-model="confpassword" name="confpassword" ng-class="{'error': registerForm.confpassword.$invalid && !registerForm.confpassword.$pristine }" placeholder="confpassword" ng-required="true" minlength="6" maxlength="20" />
         </label>
         <div class="item ">
-          <input class="button" type="button" value="Reset" ng-click="reset();" />
+          <input class="button" type="button" value="Login" ng-click="reset();" />
           <input class="button" type="submit" ng-disabled="!registerForm.$valid" value="Register" ng-click="doRegister()"/>
           
         </div>

@@ -5,27 +5,27 @@
 // the 2nd parameter is an array of 'requires'
 // 'positivista.controllers' is found in controllers.js
 angular.module('positivista', ['ionic', 'positivista.controllers'])
-.constant("webConfig", {
-    "url":"/positivista/webservices/"
-})
-.constant("appConfig", {
-    "url":"http://shashapp.net63.net/"
-})
-.run(function($ionicPlatform) {
-    $ionicPlatform.ready(function() {
-        // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-        // for form inputs)
-        if (window.cordova && window.cordova.plugins.Keyboard) {
-            cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-            cordova.plugins.Keyboard.disableScroll(true);
+    .constant("webConfig", {
+        "url": "/positivista/webservices/"
+    })
+    .constant("appConfig", {
+        "url": "http://shashapp.net63.net/"
+    })
+    .run(function($ionicPlatform) {
+        $ionicPlatform.ready(function() {
+            // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+            // for form inputs)
+            if (window.cordova && window.cordova.plugins.Keyboard) {
+                cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+                cordova.plugins.Keyboard.disableScroll(true);
 
-        }
-        if (window.StatusBar) {
-            // org.apache.cordova.statusbar required
-            StatusBar.styleDefault();
-        }
-    });
-})
+            }
+            if (window.StatusBar) {
+                // org.apache.cordova.statusbar required
+                StatusBar.styleDefault();
+            }
+        });
+    })
 
 .config(function($stateProvider, $urlRouterProvider) {
     $stateProvider
@@ -74,26 +74,6 @@ angular.module('positivista', ['ionic', 'positivista.controllers'])
         }
     })
 
-    .state('homepage', {
-        url: '/homepage',
-        templateUrl: function() {
-          if(localStorage.getItem('isLoggedIn')) {
-            var currPage = localStorage.getItem('currPage');
-            if(currPage) {
-                console.log("1111111   ", currPage);
-                return 'templates/' + currPage;
-            } else {
-                console.log("2222222   homepage");
-                return 'templates/homepage.html';
-            }
-          } else {
-            return 'templates/login.html';
-          }
-        },
-        controller: 'AuthCtrl',
-        controllerAs: 'authCtrl'
-    })
-
     .state('setprofile', {
         url: '/setprofile',
         templateUrl: 'templates/setprofile.html',
@@ -124,7 +104,44 @@ angular.module('positivista', ['ionic', 'positivista.controllers'])
         controller: 'ThankYouCtrl',
     })
 
-    
+    .state('register', {
+        url: '/register',
+        templateUrl: 'templates/register.html',
+        controller: 'AuthCtrl',
+        controllerAs: 'authCtrl'
+    })
+
+    .state('app.homepage', {
+        url: '/homepage',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/homepage.html',
+                controller: 'HomePageCtrl'
+            }
+        }
+    })
+
+    .state('appinit', {
+        url: '/appinit',
+        templateUrl: function() {
+            /*if (localStorage.getItem('isLoggedIn')) {
+                var currPage = localStorage.getItem('currPage');
+                if (currPage) {
+                    console.log("1111111   ", currPage);
+                    return 'templates/' + currPage;
+                } else {
+                    console.log("2222222   homepage");
+                    return 'templates/login.html';
+                }
+            } else {*/
+                return 'templates/login.html';
+            //}
+        },
+        controller: 'AuthCtrl',
+        controllerAs: 'authCtrl'
+    })
+
+
     // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/homepage');
+    $urlRouterProvider.otherwise('/appinit');
 });

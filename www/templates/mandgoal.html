@@ -1,7 +1,12 @@
-<ion-view view-title="SetProfile" class="body-bg bg-yellow">
-  <ion-content>
-    <h1>Mandatory Goals</h1>
-
-  </ion-content>
-  <footer><a href="#/usergoal">&nbsp;</a></footer>
+<ion-view view-title="MandGoals" class="body-bg bg-yellow">
+    <ion-content>
+        <h1>Mandatory goals</h1>
+        <p class="msg-container">here are few goals to follow</p>
+        <ion-list>
+            <ion-item ng-repeat="goal in goalList">
+                {{$index+1 | number:0}} . {{goal.title}} <span><input type="checkbox" ng-class="{'checked':checkbox[$index]}" ng-click="isChecked($index)" /></span>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+    <footer><a href="#/usergoal">&nbsp;</a></footer>
 </ion-view>
