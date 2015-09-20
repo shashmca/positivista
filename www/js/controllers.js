@@ -10,9 +10,6 @@ angular.module('positivista.controllers', [])
     //});
 
     $scope.visible = true;
-
-
-
     $scope.barHandle = function() {
         $scope.visible = !$scope.visible;
     }
@@ -43,56 +40,65 @@ angular.module('positivista.controllers', [])
 .controller('PlaylistCtrl', function($scope, $stateParams) {})
 
 .controller('HomePageCtrl', function($scope, $stateParams) {
+    localStorage.setItem('currPage', 'app/homepage');
+})
 
-    })
-    .controller('SetProfileCtrl', function($scope, $stateParams) {
-        localStorage.setItem('currPage', 'setprofile.html');
-    })
-    .controller('MandGoalsCtrl', function($scope, $stateParams) {
-        localStorage.setItem('currPage', 'mandgoal.html');
-    })
-    .controller('UserGoalsCtrl', function($scope, $stateParams) {
-        localStorage.setItem('currPage', 'usergoal.html');
-    })
-    .controller('SetReminderCtrl', function($scope, $stateParams) {
-        localStorage.setItem('currPage', 'setreminder.html');
-    })
-    .controller('ThankYouCtrl', function($scope, $stateParams) {
-        localStorage.setItem('currPage', 'thankyou.html');
-    })
-    .controller('AuthCtrl', ['AlertService', 'UserService', '$location', '$scope', '$ionicPopup', function(AlertService, UserService, $location, $scope, $ionicPopup) {
-        var self = $scope;
-        this.master = {};
-        if (localStorage.getItem('isLoggedIn')) {
-            localStorage.setItem('currPage', 'homepage.html');
+.controller('SetProfileCtrl', function($scope, $stateParams) {
+    localStorage.setItem('currPage', 'setprofile');
+})
+
+.controller('MandGoalsCtrl', function($scope, $stateParams) {
+    localStorage.setItem('currPage', 'mandgoal');
+})
+
+.controller('UserGoalsCtrl', function($scope, $stateParams) {
+    localStorage.setItem('currPage', 'usergoal');
+})
+
+.controller('SetReminderCtrl', function($scope, $stateParams) {
+    localStorage.setItem('currPage', 'setreminder');
+})
+
+.controller('ThankYouCtrl', function($scope, $stateParams) {
+    localStorage.setItem('currPage', 'thankyou');
+})
+
+.controller('AuthCtrl', ['AlertService', 'UserService', '$location', '$scope', '$ionicPopup', function(AlertService, UserService, $location, $scope, $ionicPopup) {
+    var self = $scope;
+    this.master = {};
+    if (localStorage.getItem('isLoggedIn')) {
+        var currPage = localStorage.getItem('currPage');
+        if (currPage) {
+            $location.url(currPage);
         }
-        self.doLogin = function() {
-            UserService.login(this.username, this.password).then(function(user) {
-                user = JSON.parse(user);
-                if (user.userId != null) {
-                    localStorage.setItem('isLoggedIn', true);
-                    localStorage.setItem('userId', user.userId);
-                    $location.url('/setprofile');
-                } else {
-                    alert("Login failed!");
-                }
-
-            }, function(err) {
+    }
+    self.doLogin = function() {
+        UserService.login(this.username, this.password).then(function(user) {
+            user = JSON.parse(user);
+            if (user.userId != null) {
+                localStorage.setItem('isLoggedIn', true);
+                localStorage.setItem('userId', user.userId);
+                $location.url('/setprofile');
+            } else {
                 alert("Login failed!");
-            });
-        };
-        self.doRegister = function() {
-            UserService.register(this.username, this.password, this.email).then(function(user) {
-                $location.path('/setprofile');
-            }, function(err) {
-                AlertService.set(err.data.msg);
-            });
-        };
-        self.goToRegister = function() {
-            $location.url("/register");
-        };
-        self.reset = function() {
-            this.registerForm = angular.copy(this.master);
-        }
+            }
 
-    }])
+        }, function(err) {
+            alert("Login failed!");
+        });
+    };
+    self.doRegister = function() {
+        UserService.register(this.username, this.password, this.email).then(function(user) {
+            $location.path('/setprofile');
+        }, function(err) {
+            AlertService.set(err.data.msg);
+        });
+    };
+    self.goToRegister = function() {
+        $location.url("/register");
+    };
+    self.reset = function() {
+        this.registerForm = angular.copy(this.master);
+    }
+
+}])
