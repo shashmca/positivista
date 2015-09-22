@@ -43,12 +43,30 @@ angular.module('positivista.controllers', [])
     localStorage.setItem('currPage', 'app/homepage');
 })
 
-.controller('SetProfileCtrl', ['AlertService', 'UserService', '$location', '$scope', '$ionicPopup', function(AlertService, UserService, $location, $scope, $ionicPopup) {
+.controller('SetProfileCtrl', ['GetUserInfo','ConvertImage', 'AlertService', 'UserService', '$location', '$scope', '$ionicPopup', function(GetUserInfo, ConvertImage, AlertService, UserService, $location, $scope, $ionicPopup) {
     localStorage.setItem('currPage', 'setprofile');
-    var userId = localStorage.getItem('userId');
-    $scope.profileName = localStorage.getItem("profileName");
-    $scope.profileStatus = localStorage.getItem("profileStatus");
-    $scope.profileImg = localStorage.getItem("profileImg");
+
+    var userId = GetUserInfo.getUserId();
+    GetUserInfo.getProfileData().then(function(data) {
+        if(data) {
+            data = JSON.parse(data);
+            $scope.profileName = data.profileName;
+            $scope.profileStatus = data.profileStatus;
+            $scope.profileImg = data.profileImg;
+        } else {
+            $scope.profileName = "";
+            $scope.profileStatus = "";
+            $scope.profileImg = "";
+        }
+    },
+    function(err) {
+        $scope.profileName = "";
+        $scope.profileStatus = "";
+        $scope.profileImg = "";
+    })
+    
+
+    
     $scope.saveProfileName = function() {
         if (this.profileName) {
             localStorage.setItem("profileName", this.profileName);
@@ -70,31 +88,20 @@ angular.module('positivista.controllers', [])
         });
     }
 
-    $scope.saveProfileImage = function() {
-        console.log("Image  ", this.profileImg)
-        localStorage.setItem("profileImg ", this.profileImg);
-        /*profileImg = document.getElementById('profileImg');
-        imgData = getBase64Image(profileImg);
-        localStorage.setItem("profileImg", imgData);*/
+    $scope.saveProfileImage = function(elem) {
+        console.log(elem.value)
+        ConvertImage.Base64(elem.value, function(base64Img) {
+            console.log(base64Img)
+        });
+        /*localStorage.setItem("profileImg ", this.profileImg);
         UserService.updateProfileStatus(this.profileImg, userId).then(function(user) {
             console.log("Profile image saved in DB");
         }, function(err) {
             console.log("Profile image not saved in DB");
-        });
+        });*/
     }
 
-    $scope.getBase64Image = function(img) {
-        var canvas = document.createElement("canvas");
-        canvas.width = img.width;
-        canvas.height = img.height;
 
-        var ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0);
-
-        var dataURL = canvas.toDataURL("image/png");
-
-        return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
-    }
 
 
 }])

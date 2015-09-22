@@ -3,7 +3,13 @@
         <h1>Set profile</h1>
         <p class="msg-container">choose profile image</p>
         <form name="setProfile">
-            <div class="img-container"><img src="http://www.abeautifulsite.net/wp-content/uploads/2014/08/rounded-image-250x250.png" class="img-circle" id="profileImg" name="profileImg" ng-model="profileImg" width="120" height="120" /></div>
+            <div class="img-container">
+                <input type="file" name="fileToUpload" onchange="angular.element(this).scope().saveProfileImage(this)" ng-model="profileImg" id="fileToUpload">
+                <label for="fileToUpload" data-tap-disabled="true" >
+                    <img src="../../cat.png" class="img-circle" id="profileImg" name="profileImg" width="120" height="120" />
+                </label>
+                
+            </div>
             <label class="item item-input">
                 <input type="text" name="profileName" ng-model="profileName" placeholder="profile name" maxlength="15" ng-blur="saveProfileName(this)" />
             </label>
