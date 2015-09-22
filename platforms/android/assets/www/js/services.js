@@ -1,4 +1,60 @@
 angular.module('positivista')
+    .factory('ConvertImage', function() {
+        return {
+            Base64: function(url, callback, outputFormat) {
+                var img = new Image();
+                img.crossOrigin = 'Anonymous';
+                img.onload = function() {
+                    var canvas = document.createElement('CANVAS'),
+                        ctx = canvas.getContext('2d'),
+                        dataURL;
+                    canvas.height = this.height;
+                    canvas.width = this.width;
+                    ctx.drawImage(this, 0, 0);
+                    dataURL = canvas.toDataURL(outputFormat);
+                    callback(dataURL);
+                    canvas = null;
+                };
+                img.src = url;
+            }
+        };
+    })
+    .factory('GetUserInfo', ['$http', 'webConfig', 'appConfig', function($http, webConfig, appConfig) {
+        var requestUrl;
+        if (window.cordova) {
+            requestUrl = appConfig.url;
+        } else {
+            requestUrl = webConfig.url;
+        }
+        var userId = localStorage.getItem("userId");
+        var profileFetchSucc = function(succ) {
+            if(succ.data.data) {
+                return succ.data.data;
+            } else {
+                return "";
+            }
+        }
+        var profileFetchFail = function(err) {
+            console.log("err = ", err);
+            return err;
+        }
+
+        return {
+            getUserId: function() {
+                return userId;
+            },
+            getProfileData: function() {
+                if (localStorage.getItem('profileName')) {
+                    return localStorage.getItem('profileName');
+                } else {
+                    return $http.post(requestUrl, {
+                        action: "getProfileData",
+                        userId: userId
+                    }).then(profileFetchSucc, profileFetchFail);
+                }
+            }
+        }
+    }])
     .factory('AlertService', function() {
         var message;
         return {
@@ -31,17 +87,35 @@ angular.module('positivista')
             requestUrl = webConfig.url;
         }
         var loginSuccess = function(resp) {
-            if(resp.data.data) {
-              user = resp.data.data;
-              loggedIn = true;
-              return user;  
+            if (resp.data.data) {
+                user = resp.data.data;
+                loggedIn = true;
+                return user;
             } else {
-              loggedIn = false;
-              return $q.reject(err.data.status_msg);
-            }            
+                loggedIn = false;
+                return $q.reject(err.data.status_msg);
+            }
         };
         var loginFailure = function(err) {
             loggedIn = false;
+            return $q.reject(err.data);
+        };
+        var profileNameSucc = function(resp) {
+            return resp;
+        };
+        var profileNameFail = function(err) {
+            return $q.reject(err.data);
+        };
+        var profileStatusSucc = function(resp) {
+            return resp;
+        };
+        var profileStatusFail = function(err) {
+            return $q.reject(err.data);
+        };
+        var profileImgSucc = function(resp) {
+            return resp;
+        };
+        var profileImgFail = function(err) {
             return $q.reject(err.data);
         };
 
@@ -50,7 +124,7 @@ angular.module('positivista')
                 return loggedIn;
             },
             login: function(username, pwd) {
-                
+
                 return $http.post(requestUrl, {
                     action: "signin",
                     username: username,
@@ -58,7 +132,7 @@ angular.module('positivista')
                 }).then(loginSuccess, loginFailure);
             },
             logout: function() {
-                
+
                 return $http.post(requestUrl, {}).then(function() {
                     loggedIn = false;
                 }, function() {
@@ -79,6 +153,27 @@ angular.module('positivista')
                 } else {
                     return $http.post('/api/token', {}).then(loginSuccess, loginFailure);
                 }
+            },
+            updateProfileName: function(profileName, userId) {
+                return $http.post(requestUrl, {
+                    action: "updateProfileName",
+                    profileName: profileName,
+                    userId: userId
+                }).then(profileNameSucc, profileNameFail);
+            },
+            updateProfileStatus: function(profileStatus, userId) {
+                return $http.post(requestUrl, {
+                    action: "updateProfileStatus",
+                    profileStatus: profileStatus,
+                    userId: userId
+                }).then(profileStatusSucc, profileStatusFail);
+            },
+            updateProfileImg: function(profileImg, userId) {
+                return $http.post(requestUrl, {
+                    action: "updateProfileImg",
+                    profileImg: profileImg,
+                    userId: userId
+                }).then(profileImgSucc, profileImgFail);
             }
         };
     }]);

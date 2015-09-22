@@ -3,6 +3,9 @@
 
 /* Generic CSS */
 
+.menu-open .right-buttons button.ion-navicon {
+	display: none;
+}
 .body-bg {
     background-position: center center;
     background-repeat: no-repeat;
@@ -277,22 +280,25 @@ input[type=email] {
     text-align: center;
 }
 
-.bg-yellow h1 {
+.bg-yellow h1{
     margin-top: 3rem;
     font-size: 24px;
 }
+.bg-mng-goals .list {
+	margin-top: 5rem;
+}
 
-.bg-yellow .list .item {
+.bg-yellow .list .item, .bg-mng-goals .list .item {
     text-align: left;
     background-color: transparent;
     white-space: normal;
 }
 
-.bg-yellow .list .item:nth-child(1) {
+.bg-yellow .list .item:nth-child(1), .bg-mng-goals .list .item:nth-child(1) {
     border-top: none;
 }
 
-.bg-yellow .list .item span {
+.bg-yellow .list .item span, .bg-mng-goals .list .item span{
     float: right;
 }
 
@@ -428,4 +434,11 @@ input[type=email] {
     background-color: #ee3a68;
 }
 
-
+.bg-mng-goals {
+	background-image: url(../img/bg_1.png);
+}
+.bg-mng-goals h1 {
+	text-align: center;
+    color: #fff;
+    font-weight: normal;
+}

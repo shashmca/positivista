@@ -5,7 +5,7 @@
     <form name="registerForm" role="form">
       <div class="list">
         <label class="item item-input">
-          <input type="text" ng-class="{'error': registerForm.username.$invalid && !registerForm.username.$pristine }" ng-model="username" placeholder="username" name="username" ng-required="true" minlength="4" maxlength="20" />
+          <input type="text" name="username" ng-class="{'error': registerForm.username.$invalid && !registerForm.username.$pristine }" ng-model="username" placeholder="username" ng-required="true" minlength="4" maxlength="20" />
         </label>
         <label class="item item-input">
           <input type="email" name="email" ng-class="{'error': registerForm.email.$invalid && !registerForm.email.$pristine }" ng-model="email" placeholder="email" ng-required="true" email />

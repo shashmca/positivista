@@ -9,10 +9,6 @@ angular.module('positivista.controllers', [])
     //$scope.$on('$ionicView.enter', function(e) {
     //});
 
-    $scope.visible = true;
-    $scope.barHandle = function() {
-        $scope.visible = !$scope.visible;
-    }
 })
 
 .controller('PlaylistsCtrl', function($scope) {
@@ -39,8 +35,28 @@ angular.module('positivista.controllers', [])
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {})
 
-.controller('HomePageCtrl', function($scope, $stateParams) {
+.controller('HomePageCtrl', ['$scope', '$location', '$stateParams',function($scope, $location, $stateParams) {
     localStorage.setItem('currPage', 'app/homepage');
+
+    $scope.goToMangeGoals = function() {
+        $location.url('/app/managegoals');
+    }
+}])
+
+.controller('ManageGoalsCtrl', function($scope, $stateParams) {
+    $scope.goalList = [{
+        "title": "Set clear goals?"
+    }, {
+        "title": "Make progress towards goal achievements?"
+    }, {
+        "title": "Find meaning?"
+    }, {
+        "title": "Be happy?"
+    }, {
+        "title": "Build positive relationships?"
+    }, {
+        "title": "Be fully engaged?"
+    }];
 })
 
 .controller('SetProfileCtrl', ['GetUserInfo','ConvertImage', 'AlertService', 'UserService', '$location', '$scope', '$ionicPopup', function(GetUserInfo, ConvertImage, AlertService, UserService, $location, $scope, $ionicPopup) {
