@@ -35,16 +35,17 @@ angular.module('positivista.controllers', [])
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {})
 
-.controller('HomePageCtrl', ['$scope', '$location', '$stateParams',function($scope, $location, $stateParams) {
+.controller('HomePageCtrl', ['$scope', '$location', '$stateParams', function($scope, $location, $stateParams) {
     localStorage.setItem('currPage', 'app/homepage');
 
     $scope.goToMangeGoals = function() {
         $location.url('/app/managegoals');
     }
+
 }])
 
 .controller('ManageGoalsCtrl', function($scope, $stateParams) {
-    $scope.goalList = [{
+    var goalList = [{
         "title": "Set clear goals?"
     }, {
         "title": "Make progress towards goal achievements?"
@@ -57,32 +58,58 @@ angular.module('positivista.controllers', [])
     }, {
         "title": "Be fully engaged?"
     }];
+
+    $scope.groups = [];
+    for (var i = 0; i < goalList.length; i++) {
+        $scope.groups[i] = {
+            name: goalList[i].title,
+            items: []
+        };
+        for (var j = 0; j < 1; j++) {
+            $scope.groups[i].items.push(i + '-' + j);
+        }
+    }
+
+    /*
+     * if given group is the selected group, deselect it
+     * else, select the given group
+     */
+    $scope.toggleGroup = function(group) {
+        if ($scope.isGroupShown(group)) {
+            $scope.shownGroup = null;
+        } else {
+            $scope.shownGroup = group;
+        }
+    };
+    $scope.isGroupShown = function(group) {
+        return $scope.shownGroup === group;
+    };
 })
 
-.controller('SetProfileCtrl', ['GetUserInfo','ConvertImage', 'AlertService', 'UserService', '$location', '$scope', '$ionicPopup', function(GetUserInfo, ConvertImage, AlertService, UserService, $location, $scope, $ionicPopup) {
+.controller('SetProfileCtrl', ['GetUserInfo', 'ConvertImage', 'AlertService', 'UserService', '$location', '$scope', '$ionicPopup', function(GetUserInfo, ConvertImage, AlertService, UserService, $location, $scope, $ionicPopup) {
     localStorage.setItem('currPage', 'setprofile');
 
     var userId = GetUserInfo.getUserId();
     GetUserInfo.getProfileData().then(function(data) {
-        if(data) {
-            data = JSON.parse(data);
-            $scope.profileName = data.profileName;
-            $scope.profileStatus = data.profileStatus;
-            $scope.profileImg = data.profileImg;
-        } else {
+            if (data) {
+                data = JSON.parse(data);
+                $scope.profileName = data.profileName;
+                $scope.profileStatus = data.profileStatus;
+                $scope.profileImg = data.profileImg;
+            } else {
+                $scope.profileName = "";
+                $scope.profileStatus = "";
+                $scope.profileImg = "";
+            }
+        },
+        function(err) {
             $scope.profileName = "";
             $scope.profileStatus = "";
             $scope.profileImg = "";
-        }
-    },
-    function(err) {
-        $scope.profileName = "";
-        $scope.profileStatus = "";
-        $scope.profileImg = "";
-    })
-    
+        })
 
-    
+
+
     $scope.saveProfileName = function() {
         if (this.profileName) {
             localStorage.setItem("profileName", this.profileName);
@@ -105,7 +132,7 @@ angular.module('positivista.controllers', [])
     }
 
     $scope.saveProfileImage = function(elem) {
-        console.log(elem.value)
+        console.log("=====", elem)
         ConvertImage.Base64(elem.value, function(base64Img) {
             console.log(base64Img)
         });

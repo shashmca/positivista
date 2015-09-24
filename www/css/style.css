@@ -437,8 +437,41 @@ input[type=email] {
 .bg-mng-goals {
 	background-image: url(../img/bg_1.png);
 }
-.bg-mng-goals h1 {
+.bg-mng-goals .bar.bar-balanced {
+	background: transparent;
+	border: 0px;
+}
+.bg-mng-goals .bar.bar-balanced h1 {
 	text-align: center;
     color: #fff;
     font-weight: normal;
+}
+.bg-mng-goals .has-header {
+	top:80px;
+}
+
+.bg-yellow .list .item, .bg-mng-goals .list .item.item-accordion {
+  line-height: 3rem;
+  padding-top: 0;
+  padding-bottom: 0;
+  transition: 0.09s all linear;
+  background-color: #8ed2cd;
+  color: #fff;
+}
+.bg-yellow .list .item, .bg-mng-goals .list .item.item-accordion span {
+	width: 8rem;
+    display: inline-block;
+    text-align: center;
+    float: none;
+}
+.bg-yellow .list .item, .bg-mng-goals .list .item.item-accordion.ng-hide {
+  line-height: 0px;
+}
+.bg-yellow .list .item, .bg-mng-goals .list .item.item-accordion.ng-hide-add,
+.bg-yellow .list .item, .bg-mng-goals .list .item.item-accordion.ng-hide-remove {
+  display: block !important;
+}
+.bg-yellow .list .item, .bg-mng-goals .list .item.item-stable.active {
+	background-color: #5fc5ba;
+	color: #fff;
 }

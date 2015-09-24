@@ -1,10 +1,19 @@
 <ion-view view-title="" class="bg-mng-goals body-bg ">
-     <ion-content>
-        <h1>Goals</h1>
-        <ion-list>
-            <ion-item ng-repeat="goal in goalList">
+	<ion-header class="bar bar-balanced bar-subheader"><h1>Goals</h1></ion-header>
+    <ion-content class="has-subheader">
+        
+        <ion-list >
+            <!-- <ion-item ng-repeat="goal in goalList">
                 {{goal.title}} <span>...</span>
-            </ion-item>
+            </ion-item> -->
+            <div ng-repeat="group in groups">
+                <ion-item class="item-stable" ng-click="toggleGroup(group)" ng-class="{active: isGroupShown(group)}">
+                    {{group.name}}<span ng-if="!isGroupShown(group)">...</span><span ng-if="isGroupShown(group)">O</span>
+                </ion-item>
+                <ion-item class="item-accordion" ng-repeat="item in group.items" ng-show="isGroupShown(group)">
+                    <span>EDIT</span> | <span>INACTIVE</span>
+                </ion-item>
+            </div>
         </ion-list>
     </ion-content>
 </ion-view>

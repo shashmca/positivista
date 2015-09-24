@@ -26,7 +26,9 @@ angular.module('positivista', ['ionic', 'positivista.controllers'])
             }
         });
     })
-
+.config(function($ionicConfigProvider) {
+    $ionicConfigProvider.backButton.text('');
+})
 .config(function($stateProvider, $urlRouterProvider) {
     $stateProvider
         .state('app', {
@@ -35,24 +37,6 @@ angular.module('positivista', ['ionic', 'positivista.controllers'])
             templateUrl: 'templates/menu.html',
             controller: 'AppCtrl'
         })
-
-    .state('app.search', {
-        url: '/search',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/search.html'
-            }
-        }
-    })
-
-    .state('app.browse', {
-        url: '/browse',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/browse.html'
-            }
-        }
-    })
 
     .state('app.playlists', {
         url: '/playlists',
@@ -121,21 +105,20 @@ angular.module('positivista', ['ionic', 'positivista.controllers'])
         }
     })
 
+    .state('app.managegoals', {
+        url: '/managegoals',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/managegoals.html',
+                controller: 'ManageGoalsCtrl'
+            }
+        }
+    })
+
     .state('appinit', {
         url: '/appinit',
         templateUrl: function() {
-            /*if (localStorage.getItem('isLoggedIn')) {
-                var currPage = localStorage.getItem('currPage');
-                if (currPage) {
-                    console.log("1111111   ", currPage);
-                    return 'templates/' + currPage;
-                } else {
-                    console.log("2222222   homepage");
-                    return 'templates/login.html';
-                }
-            } else {*/
-                return 'templates/login.html';
-            //}
+            return 'templates/login.html';
         },
         controller: 'AuthCtrl',
         controllerAs: 'authCtrl'
