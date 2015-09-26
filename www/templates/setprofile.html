@@ -6,7 +6,7 @@
             <div class="img-container">
                 <input type="file" name="fileToUpload" onchange="angular.element(this).scope().saveProfileImage(this)" ng-model="profileImg" id="fileToUpload">
                 <label for="fileToUpload" data-tap-disabled="true" >
-                    <img src="../../cat.png" class="img-circle" id="profileImg" name="profileImg" width="120" height="120" />
+                    <img ng-src="{{imgSrc}}" ng-model="imgSrc" class="img-circle" id="imgSrc" name="imgSrc"  width="120" height="120" />
                 </label>
                 
             </div>

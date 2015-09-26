@@ -76,21 +76,27 @@ angular.module('positivista.controllers', [])
     if(!userId) {
         userId= GetUserInfo.getUserId();
     }
+    
 
-    if (localStorage.getItem('profileName') && localStorage.getItem('profileStatus')) {
+    if (localStorage.getItem('profileName') && localStorage.getItem('profileStatus') && localStorage.getItem('profileImg')) {
         $scope.profileName = localStorage.getItem('profileName');
         $scope.profileStatus = localStorage.getItem('profileStatus');
+        $scope.imgSrc = localStorage.getItem('profileImg');
     } else {
         GetUserInfo.getProfileData().then(function(data) {
-            if (data) {
+            if (data != "null") {
                 data = JSON.parse(data);
                 $scope.profileName = data.profileName;
                 $scope.profileStatus = data.profileStatus;
-                $scope.profileImg = data.profileImg;
+                if(data.profileImg) {
+                    $scope.imgSrc = data.profileImg;
+                } else {
+                    $scope.imgSrc = "../../cat.png";
+                }
             } else {
                 $scope.profileName = "";
                 $scope.profileStatus = "";
-                $scope.profileImg = "";
+                $scope.imgSrc = "../../cat.png";
             }
         },
         function(err) {
@@ -116,11 +122,24 @@ angular.module('positivista.controllers', [])
 
     }
 
-    $scope.saveProfileImage = function(elem) {
-        console.log("=====", elem)
-        ConvertImage.Base64(elem.value, function(base64Img) {
-            console.log(base64Img)
-        });
+    $scope.saveProfileImage = function(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                var imgPath = e.target.result;
+                localStorage.setItem("profileImg", imgPath);
+                $scope.imgSrc = imgPath;
+                $scope.$apply();
+                UserService.updateProfileImg(imgPath, userId).then(function(user) {
+                    console.log("Profile image updated successfully");
+                }, function(err) {
+                    console.log("Profile image update failed");
+                });
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
     }
 }])
 
@@ -238,7 +257,15 @@ angular.module('positivista.controllers', [])
     };
     self.doRegister = function() {
         UserService.register(this.username, this.password, this.email).then(function(user) {
-            $location.path('/setprofile');
+            user = JSON.parse(user);
+            if (user.userId != null) {
+                localStorage.setItem('isLoggedIn', true);
+                localStorage.setItem('userId', user.userId);
+                $location.url('/setprofile');
+            } else {
+                alert("Registration failed!");
+            }            
+            
         }, function(err) {
             AlertService.set(err.data.msg);
         });
