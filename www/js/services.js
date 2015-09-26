@@ -37,23 +37,19 @@ angular.module('positivista')
         var profileFetchFail = function(err) {
             console.log("err = ", err);
             return err;
-        }
+        };
 
         return {
             getUserId: function() {
                 return userId;
             },
             getProfileData: function() {
-                if (localStorage.getItem('profileName')) {
-                    return localStorage.getItem('profileName');
-                } else {
-                    return $http.post(requestUrl, {
-                        action: "getProfileData",
-                        userId: userId
-                    }).then(profileFetchSucc, profileFetchFail);
-                }
+                return $http.post(requestUrl, {
+                    action: "getProfileData",
+                    userId: userId
+                }).then(profileFetchSucc, profileFetchFail);
             }
-        }
+        };
     }])
     .factory('AlertService', function() {
         var message;
@@ -68,16 +64,8 @@ angular.module('positivista')
                 return message;
             }
         };
-    }).factory('StockService', ['$http', function($http) {
-        return {
-            query: function() {
-                return $http.get('/api/stocks');
-            },
-            get: function(code) {
-                return $http.get('/api/stocks/' + code);
-            }
-        };
-    }]).factory('UserService', ['$http', '$q', 'webConfig', 'appConfig', function($http, $q, webConfig, appConfig) {
+    })
+    .factory('UserService', ['$http', '$q', 'webConfig', 'appConfig', function($http, $q, webConfig, appConfig) {
         var user = {};
         var loggedIn = false;
         var requestUrl;
@@ -100,18 +88,13 @@ angular.module('positivista')
             loggedIn = false;
             return $q.reject(err.data);
         };
-        var profileNameSucc = function(resp) {
+        var profileUpdateSucc = function(resp) {
             return resp;
         };
-        var profileNameFail = function(err) {
+        var profileUpdateFail = function(err) {
             return $q.reject(err.data);
         };
-        var profileStatusSucc = function(resp) {
-            return resp;
-        };
-        var profileStatusFail = function(err) {
-            return $q.reject(err.data);
-        };
+        
         var profileImgSucc = function(resp) {
             return resp;
         };
@@ -154,26 +137,49 @@ angular.module('positivista')
                     return $http.post('/api/token', {}).then(loginSuccess, loginFailure);
                 }
             },
-            updateProfileName: function(profileName, userId) {
+            updateProfile: function(profileName,profileStatus, userId) {
                 return $http.post(requestUrl, {
-                    action: "updateProfileName",
+                    action: "updateProfile",
                     profileName: profileName,
-                    userId: userId
-                }).then(profileNameSucc, profileNameFail);
-            },
-            updateProfileStatus: function(profileStatus, userId) {
-                return $http.post(requestUrl, {
-                    action: "updateProfileStatus",
                     profileStatus: profileStatus,
                     userId: userId
-                }).then(profileStatusSucc, profileStatusFail);
+                }).then(profileUpdateSucc, profileUpdateFail);
             },
+            
             updateProfileImg: function(profileImg, userId) {
                 return $http.post(requestUrl, {
                     action: "updateProfileImg",
                     profileImg: profileImg,
                     userId: userId
                 }).then(profileImgSucc, profileImgFail);
+            },
+            fgtpassword: function(emailId) {
+                return $http.post(requestUrl,{
+                    action: "fgtpassword",
+                    email: emailId
+                })
             }
         };
+    }])
+
+    .factory('GoalService', ['$http', '$q', 'webConfig', 'appConfig', function($http, $q, webConfig, appConfig) {
+        var requestUrl;
+        if (window.cordova) {
+            requestUrl = appConfig.url;
+        } else {
+            requestUrl = webConfig.url;
+        }
+        return {
+            fetchMandatoryGoals: function() {
+                return $http.post(requestUrl,{
+                    action: "fetchmandatorygoals",
+                })
+            },
+            addUserGoals: function() {
+
+            },
+            fetchUserGoals: function() {
+
+            }
+        }
     }]);

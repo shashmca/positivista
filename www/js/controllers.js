@@ -1,6 +1,6 @@
 angular.module('positivista.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+.controller('AppCtrl', ['$scope', '$ionicModal', '$timeout', '$location', function($scope, $ionicModal, $timeout, $location) {
 
     // With the new view caching in Ionic, Controllers are only called
     // when they are recreated or on app start, instead of every page change.
@@ -9,31 +9,15 @@ angular.module('positivista.controllers', [])
     //$scope.$on('$ionicView.enter', function(e) {
     //});
 
-})
+    $scope.doLogout = function() {
+        if (confirm("Are you sure to logout?")) {
+            localStorage.clear();
+            $location.url("/appinit");
+        }
+    }
 
-.controller('PlaylistsCtrl', function($scope) {
-    $scope.playlists = [{
-        title: 'Reggae',
-        id: 1
-    }, {
-        title: 'Chill',
-        id: 2
-    }, {
-        title: 'Dubstep',
-        id: 3
-    }, {
-        title: 'Indie',
-        id: 4
-    }, {
-        title: 'Rap',
-        id: 5
-    }, {
-        title: 'Cowbell',
-        id: 6
-    }];
-})
+}])
 
-.controller('PlaylistCtrl', function($scope, $stateParams) {})
 
 .controller('HomePageCtrl', ['$scope', '$location', '$stateParams', function($scope, $location, $stateParams) {
     localStorage.setItem('currPage', 'app/homepage');
@@ -88,9 +72,16 @@ angular.module('positivista.controllers', [])
 
 .controller('SetProfileCtrl', ['GetUserInfo', 'ConvertImage', 'AlertService', 'UserService', '$location', '$scope', '$ionicPopup', function(GetUserInfo, ConvertImage, AlertService, UserService, $location, $scope, $ionicPopup) {
     localStorage.setItem('currPage', 'setprofile');
+    var userId = localStorage.getItem('userId');
+    if(!userId) {
+        userId= GetUserInfo.getUserId();
+    }
 
-    var userId = GetUserInfo.getUserId();
-    GetUserInfo.getProfileData().then(function(data) {
+    if (localStorage.getItem('profileName') && localStorage.getItem('profileStatus')) {
+        $scope.profileName = localStorage.getItem('profileName');
+        $scope.profileStatus = localStorage.getItem('profileStatus');
+    } else {
+        GetUserInfo.getProfileData().then(function(data) {
             if (data) {
                 data = JSON.parse(data);
                 $scope.profileName = data.profileName;
@@ -107,28 +98,22 @@ angular.module('positivista.controllers', [])
             $scope.profileStatus = "";
             $scope.profileImg = "";
         })
+    }
 
-
-
-    $scope.saveProfileName = function() {
+    $scope.saveProfileData = function() {
         if (this.profileName) {
             localStorage.setItem("profileName", this.profileName);
         }
-        UserService.updateProfileName(this.profilename, userId).then(function(user) {
-            console.log("Profile name saved in DB");
+        if (this.profileStatus) {
+            localStorage.setItem("profileStatus", this.profileStatus);
+        }
+        
+        UserService.updateProfile(this.profileName, this.profileStatus, userId).then(function(user) {
+            console.log("Profile updated successfully");
         }, function(err) {
-            console.log("Profile name not saved in DB");
+            console.log("Profile update failed");
         });
-    }
 
-    $scope.saveProfileStatus = function() {
-        console.log("Status  ", this.profileStatus)
-        localStorage.setItem("profileStatus", this.profileStatus);
-        UserService.updateProfileStatus(this.profileStatus, userId).then(function(user) {
-            console.log("Profile status saved in DB");
-        }, function(err) {
-            console.log("Profile status not saved in DB");
-        });
     }
 
     $scope.saveProfileImage = function(elem) {
@@ -136,22 +121,20 @@ angular.module('positivista.controllers', [])
         ConvertImage.Base64(elem.value, function(base64Img) {
             console.log(base64Img)
         });
-        /*localStorage.setItem("profileImg ", this.profileImg);
-        UserService.updateProfileStatus(this.profileImg, userId).then(function(user) {
-            console.log("Profile image saved in DB");
-        }, function(err) {
-            console.log("Profile image not saved in DB");
-        });*/
     }
-
-
-
-
 }])
 
-.controller('MandGoalsCtrl', function($scope, $stateParams) {
+.controller('MandGoalsCtrl', ['$scope', '$stateParams', 'GoalService', function($scope, $stateParams, GoalService) {
     localStorage.setItem('currPage', 'mandgoal');
-    $scope.goalList = [{
+    GoalService.fetchMandatoryGoals().then(function(succObj) {
+        $scope.goalList = JSON.parse(succObj.data.data);
+    },
+    function(err) {
+
+    })
+    
+
+    /*[{
         "title": "Set clear goals?"
     }, {
         "title": "Make progress towards goal achievements?"
@@ -172,9 +155,9 @@ angular.module('positivista.controllers', [])
 
     $scope.isChecked = function(index) {
         $scope.checkbox[index] = !$scope.checkbox[index];
-    }
+    }*/
 
-})
+}])
 
 .controller('UserGoalsCtrl', function($scope, $stateParams) {
     localStorage.setItem('currPage', 'usergoal');
@@ -207,6 +190,26 @@ angular.module('positivista.controllers', [])
 
 .controller('ThankYouCtrl', function($scope, $stateParams) {
     localStorage.setItem('currPage', 'thankyou');
+})
+
+.controller('ManageReportCtrl', function($scope, $stateParams) {
+
+})
+
+.controller('AboutCtrl', function($scope, $stateParams) {
+
+})
+
+.controller('ManageProfileCtrl', function($scope, $stateParams) {
+
+})
+
+.controller('ManageRemindersCtrl', function($scope, $stateParams) {
+
+})
+
+.controller('SettingsCtrl', function($scope, $stateParams) {
+
 })
 
 .controller('AuthCtrl', ['AlertService', 'UserService', '$location', '$scope', '$ionicPopup', function(AlertService, UserService, $location, $scope, $ionicPopup) {
@@ -243,8 +246,17 @@ angular.module('positivista.controllers', [])
     self.goToRegister = function() {
         $location.url("/register");
     };
-    self.reset = function() {
-        this.registerForm = angular.copy(this.master);
+    self.goToLogin = function() {
+        $location.url("/appinit");
+    }
+
+    self.forgotPassword = function() {
+        UserService.fgtpassword(this.email).then(function(data) {
+                alert(data.data.status_message);
+            },
+            function(err) {
+                alert(data.data.status_message);
+            });
     }
 
 }])
