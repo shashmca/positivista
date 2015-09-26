@@ -182,4 +182,17 @@ angular.module('positivista')
 
             }
         }
+    }])
+    .factory('SessionService', ['$location', function($location) {
+        return {
+            isLoggedInUser: function() {
+                if(localStorage.getItem("userId")) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
     }]);
+
+

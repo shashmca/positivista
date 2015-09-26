@@ -179,6 +179,7 @@ input[type=email] {
 
 .bg-grey .chk-container {
     text-align: left;
+    padding: 2px;
 }
 
 .bg-grey .chk-container label {
@@ -190,6 +191,15 @@ input[type=email] {
     border-bottom: 1px solid #8c8787;
     padding-bottom: 1rem;
 }
+.bg-grey .bottom-separator p {
+	color: #000;
+}
+.bg-grey .bottom-separator p a{
+	font-family: Centaur;
+    font-size: 1rem;
+    color: #6d6e71;
+    text-decoration: none;
+    }
 
 .icon-container {
     text-align: center;
