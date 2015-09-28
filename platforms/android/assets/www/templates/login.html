@@ -1,10 +1,4 @@
 <ion-view class="body-bg bg-grey">
-  <!--<ion-header-bar>
-    <h1 class="title">Login</h1>
-     <div class="buttons">
-      <button class="button button-clear" ng-click="closeLogin()">Close</button>
-    </div> 
-  </ion-header-bar>-->
   <ion-content>
     <div class="logo"></div>
     <div class="tag-line"><span>Coaching for positive change</span></div>
@@ -22,7 +16,9 @@
         <div class="item bottom-separator">
           <input class="button" type="button" value="Sign up" ng-click="goToRegister();" />
           <input class="button" type="submit" value="Login" ng-click="doLogin()" ng-disabled="!loginForm.$valid"  />
+          <p>Problem in login. <a href="#/forgotpassword">Click here</a></p>
         </div>
+
         <div class="icon-container">
           <label>You can also sign up via:</label>
           <div class="fb-icon"><a href="javascript:void(0)">&nbsp;</a></div>

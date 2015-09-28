@@ -4,7 +4,7 @@
         <p class="msg-container">choose profile image</p>
         <form name="setProfile">
             <div class="img-container">
-                <input type="file" name="fileToUpload" onchange="angular.element(this).scope().saveProfileImage(this)" ng-model="profileImg" id="fileToUpload">
+                <input type="file" name="fileToUpload" onchange="angular.element(this).scope().saveProfileImage(this)" ng-model="profileImg" id="fileToUpload" accept="image/png,image/jpeg,image/jpg">
                 <label for="fileToUpload" data-tap-disabled="true" >
                     <img ng-src="{{imgSrc}}" ng-model="imgSrc" class="img-circle" id="imgSrc" name="imgSrc"  width="120" height="120" />
                 </label>
